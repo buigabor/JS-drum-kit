@@ -103,6 +103,9 @@ for (let i = 0; i < keys.length; i++) {
 function playKeyClick(event) {
     let dataKey = event.currentTarget.querySelector("kbd").textContent
     const audio = document.querySelector(`audio.${dataKey}`);
+    if (!audio) {
+        return;
+    }
     audio.currentTime = 0;
     audio.play();
     addPlayingClass(this);
@@ -110,6 +113,9 @@ function playKeyClick(event) {
 
 function playKeyboard(e) {
     const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+    if (!audio) {
+        return;
+    }
     audio.currentTime = 0;
     audio.play();
     addClass(e);
