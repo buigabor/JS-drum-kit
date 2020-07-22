@@ -90,15 +90,38 @@
 
 // }
 
+
+
+
+
+
 // Second, shorter and better solution
+
+window.addEventListener("keydown", playKeyboard);
+
+function playKeyboard(e) {
+    const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+    if (!audio) {
+        return;
+    }
+    audio.currentTime = 0;
+    audio.play();
+    addClassIfKeydown(e);
+}
+
+function addClassIfKeydown(event) {
+    const key = document.querySelector(`.key[data-key="${event.keyCode}"]`);
+    key.classList.add("playing")
+    setTimeout(() => {
+        key.classList.remove("playing")
+    }, 100)
+}
 
 const keys = document.body.querySelectorAll('.keys div');
 
-window.addEventListener("keydown", playKeyboard)
-
-for (let i = 0; i < keys.length; i++) {
-    keys[i].addEventListener("click", playKeyClick, addPlayingClass)
-}
+keys.forEach((key) => {
+    key.addEventListener("click", playKeyClick, addClassIfClicked)
+});
 
 function playKeyClick(event) {
     let dataKey = event.currentTarget.querySelector("kbd").textContent
@@ -108,29 +131,10 @@ function playKeyClick(event) {
     }
     audio.currentTime = 0;
     audio.play();
-    addPlayingClass(this);
+    addClassIfClicked(this);
 }
 
-function playKeyboard(e) {
-    const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
-    if (!audio) {
-        return;
-    }
-    audio.currentTime = 0;
-    audio.play();
-    addClass(e);
-}
-
-function addClass(event) {
-    let keyToUpperCase = event.key.toUpperCase();
-    let pressedKeyDiv = document.querySelector(`.${keyToUpperCase}`)
-    pressedKeyDiv.classList.add("playing")
-    setTimeout(() => {
-        pressedKeyDiv.classList.remove("playing")
-    }, 100)
-}
-
-function addPlayingClass(clickedKey) {
+function addClassIfClicked(clickedKey) {
     clickedKey.classList.add("playing")
     setTimeout(() => {
         clickedKey.classList.remove("playing")
